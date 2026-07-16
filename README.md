@@ -31,3 +31,10 @@ XAU-Dynamics-DataPipeline/
 ├── pipeline.py           # Core asynchronous processing logic
 ├── requirements.txt      # Microservice dependencies
 └── Dockerfile            # Containerization for Azure deployment
+
+🔐 Environment Variables
+To run this microservice securely, the following variables must be configured in your ⁠.env⁠ file or Azure Key Vault:
+Variable	Description	Default / Example
+AZURE_COSMOS_URI	Endpoint for Azure Cosmos DB	https://xau-dynamics-db.documents...
+AZURE_COSMOS_KEY	Primary API access key	************************
+GOLD_FEED_URL	Primary WebSocket market feed	wss://stream-api.xau-dynamics.io/v3/gold
