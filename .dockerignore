@@ -1,0 +1,86 @@
+# XAU Dynamics · TickForge — build context exclusions
+# ---------------------------------------------------------------------------
+# Two jobs: keep the build context small (faster uploads, better cache hits)
+# and make it impossible to bake a credential or a local artefact into a
+# published layer. Deny-by-default would be safer still, but an explicit list
+# stays readable — every secret-bearing pattern below is deliberate.
+# ---------------------------------------------------------------------------
+
+# --- Secrets and local configuration (never in an image) -------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+*.crt
+*.cer
+secrets/
+.azure/
+.aws/
+.kube/
+*credentials*
+*secret*
+
+# --- Version control and CI ------------------------------------------------
+.git
+.gitignore
+.gitattributes
+.github/
+.gitlab-ci.yml
+
+# --- Python build and cache artefacts --------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.tox/
+.nox/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# --- Editor and OS noise ---------------------------------------------------
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Documentation, infrastructure, and tests ------------------------------
+# Excluded because the runtime image does not read them; they belong in the
+# repository, not in a 24/7 ingestion container.
+*.md
+!README.md
+docs/
+infra/
+bicep/
+*.bicep
+*.bicepparam
+tests/
+notebooks/
+*.ipynb
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.log
+*.ndjson
+*.csv
+*.parquet
+data/
+Dockerfile
+.dockerignore
+docker-compose*.yml
+Makefile
