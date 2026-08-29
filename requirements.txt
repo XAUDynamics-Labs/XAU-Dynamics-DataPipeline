@@ -1,4 +1,39 @@
-azure-cosmos>=4.6.0
-websockets>=12.0
-pandas>=2.1.0
-numpy>=1.26.0
+# XAU Dynamics · TickForge — runtime dependencies
+# ---------------------------------------------------------------------------
+# Pinned exactly. A tick ingester that feeds a cryptographically signed risk
+# policy must produce byte-identical behaviour in CI, staging, and production;
+# a floating range makes that impossible to guarantee.
+#
+# Install:      pip install -r requirements.txt
+# Refresh:      pip install -U <pkg> && pip freeze | grep -i <pkg>
+# Python:       3.10+ (built and tested on 3.12)
+# ---------------------------------------------------------------------------
+
+# --- Persistence ----------------------------------------------------------
+# Async data-plane client (azure.cosmos.aio). The synchronous client blocks
+# the event loop and must never be used on the write path.
+azure-cosmos==4.7.0
+
+# Managed-identity / workload-identity credentials for Zero-Trust auth, so no
+# Cosmos DB account key needs to exist. Required by azure.identity.aio.
+azure-identity==1.17.1
+
+# --- Market data feed -----------------------------------------------------
+# RFC 6455 client with native asyncio support, ping/pong keepalive, and
+# per-frame size limits.
+websockets==12.0
+
+# --- Analytics ------------------------------------------------------------
+# Vectorised per-batch market context: log returns, realised volatility,
+# spread percentiles. Runs on the hot write path.
+numpy==1.26.4
+
+# Lower-cadence OHLCV bar resampling only. Set
+# PIPELINE_ENABLE_BAR_AGGREGATION=false to disable the feature; pandas can
+# then be dropped from the image.
+pandas==2.2.2
+
+# --- Configuration --------------------------------------------------------
+# Loads .env for local development. Real environment variables always win, so
+# Container Apps secrets are never shadowed by a stray file.
+python-dotenv==1.0.1
